@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import ThemeInit from "./ThemeInit";
 
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className={`${serif.variable} ${sans.variable} antialiased`}>
         <ThemeInit />
         {children}
+        <Analytics />
       </body>
     </html>
   );
