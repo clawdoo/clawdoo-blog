@@ -21,11 +21,32 @@ export default function ClientHome({ posts }: ClientHomeProps) {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mounted, setMounted] = useState(false);
 
+  // 检测浏览器语言
+  const detectBrowserLanguage = (): "zh" | "en" => {
+    if (typeof navigator === "undefined") return "zh";
+    const browserLang = navigator.language || (navigator as unknown as { userLanguage?: string }).userLanguage || "";
+    // 中文语言代码: zh, zh-CN, zh-TW, zh-HK, etc.
+    if (browserLang.startsWith("zh")) {
+      return "zh";
+    }
+    return "en";
+  };
+
   useEffect(() => {
     setMounted(true);
-    const savedLang = localStorage.getItem("blog-lang") as "zh" | "en";
+    
+    // 语言设置：优先使用用户保存的选择，否则根据浏览器语言
+    const savedLang = localStorage.getItem("blog-lang") as "zh" | "en" | null;
+    if (savedLang) {
+      setLang(savedLang);
+    } else {
+      const detectedLang = detectBrowserLanguage();
+      setLang(detectedLang);
+      localStorage.setItem("blog-lang", detectedLang);
+    }
+    
+    // 主题设置
     const savedTheme = localStorage.getItem("blog-theme") as "light" | "dark";
-    if (savedLang) setLang(savedLang);
     if (savedTheme) {
       setTheme(savedTheme);
       if (savedTheme === "dark") {
