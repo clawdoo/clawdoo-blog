@@ -19,15 +19,25 @@ interface ClientHomeProps {
 export default function ClientHome({ posts }: ClientHomeProps) {
   const [lang, setLang] = useState<"zh" | "en">("zh");
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const savedLang = localStorage.getItem("blog-lang") as "zh" | "en";
     const savedTheme = localStorage.getItem("blog-theme") as "light" | "dark";
     if (savedLang) setLang(savedLang);
-    if (savedTheme) setTheme(savedTheme);
+    if (savedTheme) {
+      setTheme(savedTheme);
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    }
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
     localStorage.setItem("blog-lang", lang);
     localStorage.setItem("blog-theme", theme);
     if (theme === "dark") {
@@ -35,7 +45,7 @@ export default function ClientHome({ posts }: ClientHomeProps) {
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, [lang, theme]);
+  }, [lang, theme, mounted]);
 
   const toggleLang = () => setLang(lang === "zh" ? "en" : "zh");
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");

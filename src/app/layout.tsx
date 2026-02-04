@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
+import ThemeInit from "./ThemeInit";
 
 const serif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -25,8 +26,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
       <body className={`${serif.variable} ${sans.variable} antialiased`}>
+        <ThemeInit />
         {children}
       </body>
     </html>
