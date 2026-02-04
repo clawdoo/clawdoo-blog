@@ -61,9 +61,24 @@ export default async function PostPageEn({ params }: PostPageProps) {
               day: "numeric",
             })}
           </div>
-          <h1 className="text-3xl mb-10 font-serif tracking-tight">
+          <h1 className="text-3xl mb-6 font-serif tracking-tight">
             {post.titleEn}
           </h1>
+          {/* Tags */}
+          {post.tagsEn && post.tagsEn.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-10">
+              {post.tagsEn.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/tags/${encodeURIComponent(tag)}?lang=en`}
+                  className="px-3 py-1 rounded-full text-xs font-sans transition-colors hover:opacity-70"
+                  style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}
+                >
+                  {tag}
+                </Link>
+              ))}
+            </div>
+          )}
           <div
             className="markdown-content"
             dangerouslySetInnerHTML={{ __html: post.contentEn }}

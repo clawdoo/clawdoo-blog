@@ -12,8 +12,9 @@ export async function generateStaticParams() {
   const enTags = getAllTags("en");
   const allTags = new Set([...zhTags.map(t => t.tag), ...enTags.map(t => t.tag)]);
   
+  // Don't encodeURIComponent here - Next.js handles URL encoding
   return Array.from(allTags).map(tag => ({
-    tag: encodeURIComponent(tag),
+    tag: tag,
   }));
 }
 

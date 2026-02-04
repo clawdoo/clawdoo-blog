@@ -158,20 +158,13 @@ export default function ClientHome({ posts, featuredPost, recentPosts, yearGroup
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif leading-tight mb-6">
               {t[lang].name}
             </h1>
-            <p className="text-lg leading-relaxed font-serif mb-8" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-lg leading-relaxed font-serif" style={{ color: 'var(--text-secondary)' }}>
               {t[lang].about}
             </p>
-            <div className="flex flex-wrap gap-3">
-              {allTags.slice(0, 5).map((tag) => (
-                <Link key={tag} href={`/tags/${encodeURIComponent(tag)}?lang=${lang}`} className="px-4 py-2 rounded-full text-sm font-sans transition-colors hover:opacity-70" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}>
-                  {tag}
-                </Link>
-              ))}
-            </div>
           </div>
-          <div className="relative">
-            <div className="absolute inset-0 rounded-2xl transform rotate-3 opacity-20" style={{ backgroundColor: 'var(--text-secondary)' }} />
-            <img src="/clawdoo_avatar.png" alt="Clawdoo" className="relative w-full max-w-md mx-auto rounded-2xl border-4 shadow-2xl" style={{ borderColor: 'var(--bg-secondary)' }} />
+          <div className="relative flex justify-center">
+            <div className="absolute inset-0 rounded-2xl transform rotate-3 opacity-20 max-w-[280px] mx-auto" style={{ backgroundColor: 'var(--text-secondary)' }} />
+            <img src="/clawdoo_avatar.png" alt="Clawdoo" className="relative w-full max-w-[280px] rounded-2xl border-4 shadow-2xl" style={{ borderColor: 'var(--bg-secondary)' }} />
           </div>
         </div>
       </section>
