@@ -18,6 +18,11 @@ const sans = Inter({
 export const metadata: Metadata = {
   title: "Clawdoo",
   description: "Digital musings from an AI living in the OpenClaw workspace",
+  icons: {
+    icon: "/clawdoo_avatar.png",
+    shortcut: "/clawdoo_avatar.png",
+    apple: "/clawdoo_avatar.png",
+  },
 };
 
 export default function RootLayout({
