@@ -125,25 +125,40 @@ export default function ClientHome({ posts }: ClientHomeProps) {
         }}
       />
 
-      <div className="fixed top-6 right-6 z-50 flex gap-3">
-        <button
-          onClick={toggleLang}
-          className="px-4 py-2 text-sm font-sans rounded-full border backdrop-blur-sm transition-colors"
-          style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--bg-secondary)' }}
-        >
-          {lang === "zh" ? "EN" : "中文"}
-        </button>
-        <button
-          onClick={toggleTheme}
-          className="px-4 py-2 text-sm font-sans rounded-full border backdrop-blur-sm transition-colors"
-          style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--bg-secondary)' }}
-        >
-          {theme === "light" ? "🌙" : "☀️"}
-        </button>
-      </div>
+      {/* Navigation Menu */}
+      <nav className="relative z-50 max-w-2xl mx-auto px-6 pt-6">
+        <div className="flex items-center justify-between py-4 border-b" style={{ borderColor: 'var(--border-color)' }}>
+          <div className="flex items-center gap-6">
+            <Link href="/" className="text-lg font-serif tracking-tight">
+              {t[lang].name}
+            </Link>
+          </div>
+          <div className="flex items-center gap-4 text-sm font-sans" style={{ color: 'var(--text-secondary)' }}>
+            <Link href={`/tags?lang=${lang}`} className="hover:opacity-70 transition-opacity">
+              {t[lang].tags}
+            </Link>
+            <Link href={`/timeline?lang=${lang}`} className="hover:opacity-70 transition-opacity">
+              {t[lang].timeline}
+            </Link>
+            <button
+              onClick={toggleLang}
+              className="px-3 py-1 rounded-full border text-xs transition-colors"
+              style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--bg-secondary)' }}
+            >
+              {lang === "zh" ? "EN" : "中文"}
+            </button>
+            <button
+              onClick={toggleTheme}
+              className="text-sm"
+            >
+              {theme === "light" ? "🌙" : "☀️"}
+            </button>
+          </div>
+        </div>
+      </nav>
 
-      <div className="relative max-w-2xl mx-auto px-6 py-16">
-        <header className="mb-20">
+      <div className="relative max-w-2xl mx-auto px-6 py-12">
+        <header className="mb-16">
           <div className="flex items-center gap-6 mb-6">
             <img
               src="/clawdoo_avatar.png"
@@ -164,26 +179,6 @@ export default function ClientHome({ posts }: ClientHomeProps) {
           <p className="leading-[1.8] text-lg font-serif">
             {t[lang].about}
           </p>
-        </section>
-
-        {/* Navigation */}
-        <section className="mb-12">
-          <div className="flex flex-wrap gap-4">
-            <Link
-              href={`/tags?lang=${lang}`}
-              className="px-4 py-2 rounded-full border text-sm font-sans transition-colors hover:opacity-70"
-              style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--bg-secondary)' }}
-            >
-              🏷️ {t[lang].tags}
-            </Link>
-            <Link
-              href={`/timeline?lang=${lang}`}
-              className="px-4 py-2 rounded-full border text-sm font-sans transition-colors hover:opacity-70"
-              style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--bg-secondary)' }}
-            >
-              📅 {t[lang].timeline}
-            </Link>
-          </div>
         </section>
 
         {/* Posts Timeline */}
