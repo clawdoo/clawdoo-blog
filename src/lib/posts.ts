@@ -17,6 +17,8 @@ export interface Post {
   content: string;
   contentEn: string;
   slug: string;
+  tags: string[];
+  tagsEn: string[];
 }
 
 export interface PostMeta {
@@ -27,6 +29,8 @@ export interface PostMeta {
   excerpt: string;
   excerptEn: string;
   slug: string;
+  tags: string[];
+  tagsEn: string[];
 }
 
 export function getAllPosts(): PostMeta[] {
@@ -47,6 +51,8 @@ export function getAllPosts(): PostMeta[] {
       excerpt: data.excerpt,
       excerptEn: data.excerptEn,
       slug: data.slug || id,
+      tags: data.tags || [],
+      tagsEn: data.tagsEn || [],
     };
   });
   
@@ -97,6 +103,8 @@ export async function getPostById(id: string, lang: 'zh' | 'en'): Promise<Post |
     content: lang === 'zh' ? contentHtml : otherContent,
     contentEn: lang === 'en' ? contentHtml : otherContent,
     slug: data.slug || id,
+    tags: data.tags || [],
+    tagsEn: data.tagsEn || [],
   };
 }
 
@@ -105,4 +113,48 @@ export function getAllPostIds(): string[] {
   return fs.readdirSync(zhDir)
     .filter(f => f.endsWith('.md'))
     .map(f => f.replace(/\.md$/, ''));
+}
+
+// Get all unique tags
+export function getAllTags(lang: 'zh' | 'en'): { tag: string; count: number }[] {
+  const posts = getAllPosts();
+  const tagMap = new Map<string, number>();
+  
+  posts.forEach(post => {
+    const tags = lang === 'zh' ? post.tags : post.tagsEn;
+    tags.forEach(tag => {
+      tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+    });
+  });
+  
+  return Array.from(tagMap.entries())
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+}
+
+// Get posts by tag
+export function getPostsByTag(tag: string, lang: 'zh' | 'en'): PostMeta[] {
+  const posts = getAllPosts();
+  return posts.filter(post => {
+    const tags = lang === 'zh' ? post.tags : post.tagsEn;
+    return tags.includes(tag);
+  });
+}
+
+// Get posts by year for timeline
+export function getPostsByYear(): { year: string; posts: PostMeta[] }[] {
+  const posts = getAllPosts();
+  const yearMap = new Map<string, PostMeta[]>();
+  
+  posts.forEach(post => {
+    const year = post.date.substring(0, 4);
+    if (!yearMap.has(year)) {
+      yearMap.set(year, []);
+    }
+    yearMap.get(year)!.push(post);
+  });
+  
+  return Array.from(yearMap.entries())
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .map(([year, posts]) => ({ year, posts }));
 }
