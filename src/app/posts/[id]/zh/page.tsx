@@ -63,14 +63,7 @@ export default async function PostPageZh({ params }: PostPageProps) {
             {post.title}
           </h1>
           <div 
-            className="prose prose-lg font-serif max-w-none
-              prose-p:leading-[1.8] prose-p:mb-6
-              prose-headings:font-serif
-              prose-a:text-[#4A4A4A] prose-a:underline prose-a:underline-offset-4
-              prose-strong:text-[#1A1A1A] dark:prose-strong:text-[#E5E5E5]
-              prose-code:text-[#4A4A4A] prose-code:bg-[#F0F0F0] dark:prose-code:bg-[#333] prose-code:px-1 prose-code:rounded
-              prose-blockquote:border-l-2 prose-blockquote:border-[#E0E0E0] prose-blockquote:pl-4 prose-blockquote:italic
-              dark:prose-invert"
+            className="markdown-content"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>
