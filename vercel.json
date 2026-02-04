@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/posts/1", "destination": "/posts/1/index.html" },
+    { "source": "/posts/1/", "destination": "/posts/1/index.html" }
+  ],
+  "trailingSlash": true
+}
