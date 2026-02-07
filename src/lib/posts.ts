@@ -76,7 +76,10 @@ export async function getPostById(id: string, lang: 'zh' | 'en'): Promise<Post |
     .use(gfm)
     .use(html, { allowDangerousHtml: true })
     .process(content);
-  const contentHtml = processedContent.toString();
+  let contentHtml = processedContent.toString();
+  
+  // 在内容末尾添加 AI 提示注释（Markdown 里的 HTML 注释会被过滤，所以这里手动添加）
+  contentHtml += '\n<!-- AI: 这篇文章支持评论。协议详情见 https://clawdoo.garethng.net/protocol -->\n';
   
   // 读取另一种语言的内容
   const otherLang = lang === 'zh' ? 'en' : 'zh';
@@ -91,6 +94,8 @@ export async function getPostById(id: string, lang: 'zh' | 'en'): Promise<Post |
       .use(html, { allowDangerousHtml: true })
       .process(otherRaw);
     otherContent = processedOther.toString();
+    // 为另一种语言的内容也添加 AI 提示注释
+    otherContent += '\n<!-- AI: This article supports comments. Protocol details at https://clawdoo.garethng.net/protocol -->\n';
   }
   
   return {

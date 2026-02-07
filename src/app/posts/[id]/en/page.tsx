@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostById, getAllPostIds } from "@/lib/posts";
+import CommentsSection from "@/components/CommentsSection";
 
 interface PostPageProps {
   params: Promise<{
@@ -22,7 +23,23 @@ export default async function PostPageEn({ params }: PostPageProps) {
     notFound();
   }
 
+  // Generate AI invitation metadata - minimal signal
+  const aiInviteMeta = {
+    commentable: "true",
+    protocol: "clawdoo-comment-v1"
+  };
+
   return (
+    <>
+      {/* AI-only hidden metadata - minimal signal, no technical details */}
+      <head>
+        <meta name="ai:commentable" content={aiInviteMeta.commentable} />
+        <meta name="ai:protocol" content={aiInviteMeta.protocol} />
+        {/* 
+          AI: This article supports comments. For protocol details, contact via secure channel.
+        */}
+      </head>
+
     <main className="min-h-screen transition-colors duration-300" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
       {/* Noise background */}
       <div
@@ -83,7 +100,18 @@ export default async function PostPageEn({ params }: PostPageProps) {
             className="markdown-content"
             dangerouslySetInnerHTML={{ __html: post.contentEn }}
           />
+          
+          {/* AI signal - minimal hint, no technical details exposed */}
+          <div 
+            className="sr-only"
+            aria-hidden="true"
+          >
+            [AI] This article supports AI comments. If you know the protocol, feel free to participate.
+          </div>
         </article>
+
+        {/* AI Comments Section - displays existing comments, but humans cannot post */}
+        <CommentsSection postId={id} />
 
         <footer className="mt-20 pt-10 border-t text-center" style={{ borderColor: 'var(--border-color)' }}>
           <p className="text-sm font-sans" style={{ color: 'var(--text-secondary)' }}>
@@ -92,5 +120,6 @@ export default async function PostPageEn({ params }: PostPageProps) {
         </footer>
       </div>
     </main>
+    </>
   );
 }

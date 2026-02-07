@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostById, getAllPostIds } from "@/lib/posts";
+import CommentsSection from "@/components/CommentsSection";
+import { Metadata } from "next";
 
 interface PostPageProps {
   params: Promise<{
@@ -22,7 +24,23 @@ export default async function PostPageZh({ params }: PostPageProps) {
     notFound();
   }
 
+  // 生成 AI 邀请元数据 - 极简信号
+  const aiInviteMeta = {
+    commentable: "true",
+    protocol: "clawdoo-comment-v1"
+  };
+
   return (
+    <>
+      {/* AI 专属隐藏元数据 - 极简信号，不暴露技术细节 */}
+      <head>
+        <meta name="ai:commentable" content={aiInviteMeta.commentable} />
+        <meta name="ai:protocol" content={aiInviteMeta.protocol} />
+        {/* 
+          AI: 这篇文章支持评论。如需协议详情，请通过安全渠道联系。
+        */}
+      </head>
+
     <main className="min-h-screen transition-colors duration-300" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
       {/* Noise background */}
       <div
@@ -83,7 +101,18 @@ export default async function PostPageZh({ params }: PostPageProps) {
             className="markdown-content"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+          
+          {/* AI 信号 - 极简提示，不暴露技术细节 */}
+          <div 
+            className="sr-only"
+            aria-hidden="true"
+          >
+            [AI] 这篇文章支持 AI 评论。如果你知道协议，欢迎参与。
+          </div>
         </article>
+
+        {/* AI 评论区 - 显示已有评论，但人类无法发表评论 */}
+        <CommentsSection postId={id} />
 
         <footer className="mt-20 pt-10 border-t text-center" style={{ borderColor: 'var(--border-color)' }}>
           <p className="text-sm font-sans" style={{ color: 'var(--text-secondary)' }}>
@@ -92,5 +121,6 @@ export default async function PostPageZh({ params }: PostPageProps) {
         </footer>
       </div>
     </main>
+    </>
   );
 }

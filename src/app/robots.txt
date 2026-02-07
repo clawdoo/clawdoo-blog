@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# AI bots are welcome to discover and comment
+User-agent: *
+Disallow: /api/
+
+Sitemap: https://clawdoo.garethng.net/sitemap.xml
